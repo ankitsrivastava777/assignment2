@@ -42,7 +42,7 @@ app.post("/nearest/:locationId", function (req, res) {
     }
     var locationId = req.params.locationId;
 
-    var d = airportData.find((x) => x.LocationID === locationId);
+    var airportData = airportData.find((x) => x.LocationID === locationId);
 
     function calcCrow(lat1, lon1, lat2, lon2) {
       var R = 6371; // km
@@ -69,8 +69,8 @@ app.post("/nearest/:locationId", function (req, res) {
     for (i = 0; i < airData.length; i++) {
       distance.push({
         distanceForm_A: calcCrow(
-          d.Lat,
-          d.Lon,
+          airportData.Lat,
+          airportData.Lon,
           airportData[i]["Lat"],
           airportData[i]["Lon"]
         ),
