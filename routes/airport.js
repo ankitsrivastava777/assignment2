@@ -17,19 +17,29 @@ function calcDistanceByCordinates(
   var latitude1 = toRad(latitude1);
   var latitude2 = toRad(latitude2);
 
-  var a =
+  var calcDistance =
     Math.sin(latitude / 2) * Math.sin(latitude / 2) +
     Math.sin(longitude / 2) *
       Math.sin(longitude / 2) *
       Math.cos(latitude1) *
       Math.cos(latitude2);
-  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  var distance = Radius * c;
+  var calc = 2 * Math.atan2(Math.sqrt(calcDistance), Math.sqrt(1 - calcDistance));
+  var distance = Radius * calc;
   return distance;
 }
 // Converts numeric degrees to radians
 function toRad(Value) {
   return (Value * Math.PI) / 180;
+}
+
+function compare(a, b) {
+  if (a.distanceForm_A < b.distanceForm_A) {
+    return -1;
+  }
+  if (a.distanceForm_A > b.distanceForm_A) {
+    return 1;
+  }
+  return 0;
 }
 
 app.get("/list", function (req, res) {
@@ -75,15 +85,6 @@ app.post("/nearest/:locationId", function (req, res) {
       });
     }
 
-    function compare(a, b) {
-      if (a.distanceForm_A < b.distanceForm_A) {
-        return -1;
-      }
-      if (a.distanceForm_A > b.distanceForm_A) {
-        return 1;
-      }
-      return 0;
-    }
     sortedData = distance.sort(compare);
     var nearest_distance = sortedData.splice(1, 3);
     res.status(200).json({
